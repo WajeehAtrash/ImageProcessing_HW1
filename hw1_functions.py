@@ -35,21 +35,13 @@ def showMapping(old_range, a, b):
 #TODO:Redo it
 def minkowski2Dist(im1,im2):
     # TODO: implement fucntion
-    hist_im1 = cv2.calcHist([im1], channels=[0], mask=None, histSize=[256], ranges=[0, 256])#first  image histogram
-    hist_im2 = cv2.calcHist([im2], channels=[0], mask=None, histSize=[256], ranges=[0, 256])#second  image histogram
+    hist_im1 = np.histogram(im1,bins=256,range=(0,255))#first  image histogram
+    hist_im2 = np.histogram(im2,bins=256,range=(0,255))#second  image histogram
     #calculating the num of pixels in each image
-    pixels_im1= len(im1[0])*len(im1)
-    pixels_im2 = len(im2[0])*len(im2)
-    d=0
-    # lib_d=distance.minkowski(hist_im1,hist_im2,2)
-    # print(lib_d)
-    for i in range(256):
-       p_A=(hist_im1[i]/pixels_im1)#Pa(k)
-       p_B=(hist_im2[i]/pixels_im2)#Pb(k)
-       d=d+abs((p_A-p_B)**2)
-    d=d**(1/2)
+    N=hist_im1[0].sum()
+    d=pow(np.sum(pow(((hist_im2[0]-hist_im1[0])/N),2)),0.5)
 
-    return np.asscalar(d)
+    return d
 
 
 def meanSqrDist(im1, im2):
@@ -60,6 +52,8 @@ def meanSqrDist(im1, im2):
 
 def sliceMat(im):
     # TODO: implement fucntion
+    Slices=np.zeros((len(im[0])*len(im),256))
+    # for i in range(256):
 
     return Slices
 
@@ -86,12 +80,8 @@ if __name__ == '__main__':
     path_image = r'D:\ImageProcessing\HW1\Images\fruit.tif'
     darkimg = cv2.imread(path_image)
     darkimg_gray = cv2.cvtColor(darkimg, cv2.COLOR_BGR2GRAY)
-    # #_______________________________________________________
     path_image = r'D:\ImageProcessing\HW1\Images\lena.tif'
     darkimg2 = cv2.imread(path_image)
     darkimg_gray2 = cv2.cvtColor(darkimg2, cv2.COLOR_BGR2GRAY)
-    # #____________________________________________________
-    # my_d = minkowski2Dist(darkimg_gray, darkimg_gray2);
-    # print("my function=", my_d)
-    meanSquaredError=meanSqrDist(darkimg_gray,darkimg_gray2)
-    print("mean squaredError=",meanSquaredError)
+    d= minkowski2Dist(darkimg_gray,darkimg_gray2)
+    print(d)
