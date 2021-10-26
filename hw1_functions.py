@@ -35,11 +35,11 @@ def showMapping(old_range, a, b):
 #TODO:Redo it
 def minkowski2Dist(im1,im2):
     # TODO: implement fucntion
-    hist_im1 = np.histogram(im1,bins=256,range=(0,255))#first  image histogram
-    hist_im2 = np.histogram(im2,bins=256,range=(0,255))#second  image histogram
+    hist_im1,_ = np.histogram(im1,bins=256,range=(0,255))#first  image histogram
+    hist_im2,_ = np.histogram(im2,bins=256,range=(0,255))#second  image histogram
     #calculating the num of pixels in each image
-    N=hist_im1[0].sum()
-    d=pow(np.sum(pow(((hist_im2[0]-hist_im1[0])/N),2)),0.5)
+    N=hist_im1.sum()
+    d=np.sum(abs(hist_im1-hist_im2)**2)**(0.5)
 
     return d
 
@@ -80,8 +80,9 @@ if __name__ == '__main__':
     path_image = r'D:\ImageProcessing\HW1\Images\fruit.tif'
     darkimg = cv2.imread(path_image)
     darkimg_gray = cv2.cvtColor(darkimg, cv2.COLOR_BGR2GRAY)
-    path_image = r'D:\ImageProcessing\HW1\Images\lena.tif'
-    darkimg2 = cv2.imread(path_image)
-    darkimg_gray2 = cv2.cvtColor(darkimg2, cv2.COLOR_BGR2GRAY)
-    d= minkowski2Dist(darkimg_gray,darkimg_gray2)
-    print(d)
+    # path_image = r'D:\ImageProcessing\HW1\Images\lena.tif'
+    # darkimg2 = cv2.imread(path_image)
+    # darkimg_gray2 = cv2.cvtColor(darkimg2, cv2.COLOR_BGR2GRAY)
+    # d= meanSqrDist(darkimg_gray,darkimg_gray2)
+    # print(d)
+    sliceMat(darkimg_gray)
