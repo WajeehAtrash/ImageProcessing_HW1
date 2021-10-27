@@ -12,11 +12,10 @@ def contrastEnhance(im,range1):
     # TODO: implement fucntion
     a = (range1[1] - range1[0]) / 255
     b = range1[0]
-    width = len(im[0])
-    height = len(im)
-    nim = np.zeros((width, height))
-    for i in range(width):
-        for j in range(height):
+    row,col=im.shape
+    nim = np.zeros((row, col))
+    for i in range(row):
+        for j in range(col):
             nim[i][j] = (im[i][j] * a) + b
     return nim, a, b
 
@@ -52,23 +51,36 @@ def meanSqrDist(im1, im2):
 
 def sliceMat(im):
     # TODO: implement fucntion
-    Slices=np.zeros((len(im[0])*len(im),256))
+    row, col = im.shape
+    Slices=np.zeros((row*col,256))
     for i in range(256):
         curr_slice=((im==i )*1).flatten()
         Slices[:,i]=curr_slice
     return Slices
 
 
-# def SLTmap(im1, im2):
-#     # TODO: implement fucntion
-#     return mapImage(im1, TM), TM
-#
-#
+def SLTmap(im1, im2):
+    # TODO: implement fucntion
+    row, col = im1.shape
+    im1_slices=sliceMat(im1)
+    TM = np.zeros((256,1))
+    for i in range(256):
+        grayScale_col=im1_slices[:,i]
+        pixels_num =grayScale_col.sum()# pixel num
+        grayScale_col=grayScale_col.reshape(row,col)
+        if pixels_num==0:
+            continue
+        inew=(im2*grayScale_col).sum()/pixels_num
+        TM[i]=inew
+    return mapImage(im1, TM), TM
+
+
 def mapImage (im,tm):
     # TODO: implement fucntion
+    row, col = im.shape
     Slices=sliceMat(im)
     TMim=np.matmul(Slices,tm)
-    TMim=TMim.reshape(len(im[0]),len(im))
+    TMim=TMim.reshape(row,col)
     return TMim
 
 
@@ -84,13 +96,15 @@ if __name__ == '__main__':
     path_image = r'D:\ImageProcessing\HW1\Images\fruit.tif'
     darkimg = cv2.imread(path_image)
     darkimg_gray = cv2.cvtColor(darkimg, cv2.COLOR_BGR2GRAY)
+    im, TM = SLTmap(darkimg_gray, darkimg_gray)
+    print(TM)
     # path_image = r'D:\ImageProcessing\HW1\Images\lena.tif'
     # darkimg2 = cv2.imread(path_image)
     # darkimg_gray2 = cv2.cvtColor(darkimg2, cv2.COLOR_BGR2GRAY)
     # d= meanSqrDist(darkimg_gray,darkimg_gray2)
     # print(d)
-    vec=np.mat = np.arange(0,256).reshape(256,1)
-    im= mapImage(darkimg_gray,vec)
+    # vec=np.mat = np.arange(0,256).reshape(256,1)
+    # im= mapImage(darkimg_gray,vec)
     plt.figure()
     plt.subplot(1, 2, 1)
     plt.imshow(darkimg)
@@ -100,4 +114,5 @@ if __name__ == '__main__':
     plt.imshow(im, cmap='gray', vmin=0, vmax=255)
     plt.title('Tone Maping')
     plt.show()
+    # im,TM=SLTmap(darkimg_gray,darkimg_gray)
     input()
