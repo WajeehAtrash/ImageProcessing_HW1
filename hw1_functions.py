@@ -64,11 +64,14 @@ def sliceMat(im):
 #     return mapImage(im1, TM), TM
 #
 #
-# def mapImage (im,tm):
-#     # TODO: implement fucntion
-#     return TMim
-#
-#
+def mapImage (im,tm):
+    # TODO: implement fucntion
+    Slices=sliceMat(im)
+    TMim=np.matmul(Slices,tm)
+    TMim=TMim.reshape(len(im[0]),len(im))
+    return TMim
+
+
 # def sltNegative(im):
 # 	# TODO: implement fucntion - one line
 #     return nim
@@ -86,4 +89,15 @@ if __name__ == '__main__':
     # darkimg_gray2 = cv2.cvtColor(darkimg2, cv2.COLOR_BGR2GRAY)
     # d= meanSqrDist(darkimg_gray,darkimg_gray2)
     # print(d)
-    sliceMat(darkimg_gray)
+    vec=np.mat = np.arange(0,256).reshape(256,1)
+    im= mapImage(darkimg_gray,vec)
+    plt.figure()
+    plt.subplot(1, 2, 1)
+    plt.imshow(darkimg)
+    plt.title('original')
+
+    plt.subplot(1, 2, 2)
+    plt.imshow(im, cmap='gray', vmin=0, vmax=255)
+    plt.title('Tone Maping')
+    plt.show()
+    input()
