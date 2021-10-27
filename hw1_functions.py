@@ -53,8 +53,9 @@ def meanSqrDist(im1, im2):
 def sliceMat(im):
     # TODO: implement fucntion
     Slices=np.zeros((len(im[0])*len(im),256))
-    # for i in range(256):
-
+    for i in range(256):
+        curr_slice=((im==i )*1).flatten()
+        Slices[:,i]=curr_slice
     return Slices
 
 
