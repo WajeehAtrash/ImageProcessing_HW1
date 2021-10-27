@@ -90,9 +90,15 @@ def sltNegative(im):
     return nim
 
 
-# def sltThreshold(im, thresh):
-#     # TODO: implement fucntion
-#     return nim
+def sltThreshold(im, thresh):
+    # TODO: implement fucntion
+    TM=np.zeros((1,256))
+    for i in range(256):
+        if i>thresh:
+            TM[0][i]=255
+    nim=mapImage(im,TM)
+    return nim
+
 if __name__ == '__main__':
     path_image = r'D:\ImageProcessing\HW1\Images\fruit.tif'
     darkimg = cv2.imread(path_image)
@@ -116,5 +122,6 @@ if __name__ == '__main__':
     # plt.title('Tone Maping')
     # plt.show()
     # im,TM=SLTmap(darkimg_gray,darkimg_gray)
-    sltNegative(darkimg_gray)
+    # sltNegative(darkimg_gray)
+    sltThreshold(darkimg_gray,100)
     input()
