@@ -84,11 +84,12 @@ def mapImage (im,tm):
     return TMim
 
 
-# def sltNegative(im):
-# 	# TODO: implement fucntion - one line
-#     return nim
-#
-#
+def sltNegative(im):
+	# TODO: implement fucntion - one line
+    nim=mapImage(im,np.arange(255,0,-1))
+    return nim
+
+
 # def sltThreshold(im, thresh):
 #     # TODO: implement fucntion
 #     return nim
@@ -105,14 +106,15 @@ if __name__ == '__main__':
     # print(d)
     # vec=np.mat = np.arange(0,256).reshape(256,1)
     # im= mapImage(darkimg_gray,vec)
-    plt.figure()
-    plt.subplot(1, 2, 1)
-    plt.imshow(darkimg)
-    plt.title('original')
-
-    plt.subplot(1, 2, 2)
-    plt.imshow(im, cmap='gray', vmin=0, vmax=255)
-    plt.title('Tone Maping')
-    plt.show()
+    # plt.figure()
+    # plt.subplot(1, 2, 1)
+    # plt.imshow(darkimg)
+    # plt.title('original')
+    #
+    # plt.subplot(1, 2, 2)
+    # plt.imshow(im, cmap='gray', vmin=0, vmax=255)
+    # plt.title('Tone Maping')
+    # plt.show()
     # im,TM=SLTmap(darkimg_gray,darkimg_gray)
+    sltNegative(darkimg_gray)
     input()
