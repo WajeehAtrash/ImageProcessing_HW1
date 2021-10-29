@@ -10,9 +10,9 @@ def print_IDs():
 
 def contrastEnhance(im,range1):
     # TODO: implement fucntion
-    a = (range1[1] - range1[0]) / 255
-    b = range1[0]
-    row,col=im.shape
+    a = (range1[1] - range1[0]) /(np.max(im)-np.min(im))
+    b = range1[1]-(a*np.max(im))
+    row, col, = im.shape
     nim = np.zeros((row, col))
     for i in range(row):
         for j in range(col):
@@ -62,16 +62,17 @@ def sliceMat(im):
 def SLTmap(im1, im2):
     # TODO: implement fucntion
     row, col = im1.shape
-    im1_slices=sliceMat(im1)
-    TM = np.zeros((256,1))
+    im1_slices = sliceMat(im1)
+    TM = np.zeros((256, 1))
     for i in range(256):
-        grayScale_col=im1_slices[:,i]
-        pixels_num =grayScale_col.sum()# pixel num
-        grayScale_col=grayScale_col.reshape(row,col)
-        if pixels_num==0:
+        grayScale_col = im1_slices[:, i]
+        pixels_num = grayScale_col.sum()  # pixel num
+        grayScale_col = grayScale_col.reshape(row, col)
+        if pixels_num == 0:
             continue
-        inew=(im2*grayScale_col).sum()/pixels_num
-        TM[i]=inew
+        inew = int((im2 * grayScale_col).sum() / pixels_num)
+        TM[i] = inew
+
     return mapImage(im1, TM), TM
 
 
@@ -86,42 +87,43 @@ def mapImage (im,tm):
 
 def sltNegative(im):
 	# TODO: implement fucntion - one line
-    nim=mapImage(im,np.arange(255,0,-1))
+    nim=mapImage(im,np.arange(255,-1,-1))
     return nim
 
 
 def sltThreshold(im, thresh):
     # TODO: implement fucntion
-    TM=np.zeros((1,256))
+    TM=np.zeros((256,1))
     for i in range(256):
         if i>thresh:
-            TM[0][i]=255
+            TM[i][0]=255
     nim=mapImage(im,TM)
     return nim
 
-if __name__ == '__main__':
-    path_image = r'D:\ImageProcessing\HW1\Images\fruit.tif'
-    darkimg = cv2.imread(path_image)
-    darkimg_gray = cv2.cvtColor(darkimg, cv2.COLOR_BGR2GRAY)
-    im, TM = SLTmap(darkimg_gray, darkimg_gray)
-    print(TM)
-    # path_image = r'D:\ImageProcessing\HW1\Images\lena.tif'
-    # darkimg2 = cv2.imread(path_image)
-    # darkimg_gray2 = cv2.cvtColor(darkimg2, cv2.COLOR_BGR2GRAY)
-    # d= meanSqrDist(darkimg_gray,darkimg_gray2)
-    # print(d)
-    # vec=np.mat = np.arange(0,256).reshape(256,1)
-    # im= mapImage(darkimg_gray,vec)
-    # plt.figure()
-    # plt.subplot(1, 2, 1)
-    # plt.imshow(darkimg)
-    # plt.title('original')
-    #
-    # plt.subplot(1, 2, 2)
-    # plt.imshow(im, cmap='gray', vmin=0, vmax=255)
-    # plt.title('Tone Maping')
-    # plt.show()
-    # im,TM=SLTmap(darkimg_gray,darkimg_gray)
-    # sltNegative(darkimg_gray)
-    sltThreshold(darkimg_gray,100)
-    input()
+
+# if __name__ == '__main__':
+#     path_image = r'D:\ImageProcessing\HW1\Images\fruit.tif'
+#     darkimg = cv2.imread(path_image)
+#     darkimg_gray = cv2.cvtColor(darkimg, cv2.COLOR_BGR2GRAY)
+#     im, TM = SLTmap(darkimg_gray, darkimg_gray)
+#     print(TM)
+#     # path_image = r'D:\ImageProcessing\HW1\Images\lena.tif'
+#     # darkimg2 = cv2.imread(path_image)
+#     # darkimg_gray2 = cv2.cvtColor(darkimg2, cv2.COLOR_BGR2GRAY)
+#     # d= meanSqrDist(darkimg_gray,darkimg_gray2)
+#     # print(d)
+#     # vec=np.mat = np.arange(0,256).reshape(256,1)
+#     # im= mapImage(darkimg_gray,vec)
+#     # plt.figure()
+#     # plt.subplot(1, 2, 1)
+#     # plt.imshow(darkimg)
+#     # plt.title('original')
+#     #
+#     # plt.subplot(1, 2, 2)
+#     # plt.imshow(im, cmap='gray', vmin=0, vmax=255)
+#     # plt.title('Tone Maping')
+#     # plt.show()
+#     # im,TM=SLTmap(darkimg_gray,darkimg_gray)
+#     # sltNegative(darkimg_gray)
+#     sltThreshold(darkimg_gray,100)
+#     input()
